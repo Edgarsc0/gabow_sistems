@@ -137,6 +137,64 @@ const Main = () => {
     })
   };
 
+  const unitVector = vector => {
+    const magnitud = (vector[0] ** 2 + vector[1] ** 2 + vector[2] ** 2) ** (1 / 2);
+    return [
+      vector[0] / magnitud,
+      vector[1] / magnitud,
+      vector[2] / magnitud
+    ];
+  }
+
+  const magnitude = vector => {
+    return (vector[0] ** 2 + vector[1] ** 2 + vector[2] ** 2) ** (1 / 2);
+  }
+
+  const handleCalculateCoords = (e) => {
+    e.preventDefault();
+    const [lat1, lon1] = [parseFloat(e.target.lat1.value), parseFloat(e.target.lon1.value)];
+    const [lat2, lon2] = [parseFloat(e.target.lat2.value), parseFloat(e.target.lon2.value)];
+    const vector1 = [
+      r * Math.cos(toRadians(lat1)) * Math.cos(toRadians(lon1)),
+      r * Math.cos(toRadians(lat1)) * Math.sin(toRadians(lon1)),
+      r * Math.sin(toRadians(lat1))
+    ];
+    const vector2 = [
+      r * Math.cos(toRadians(lat2)) * Math.cos(toRadians(lon2)),
+      r * Math.cos(toRadians(lat2)) * Math.sin(toRadians(lon2)),
+      r * Math.sin(toRadians(lat2))
+    ];
+    const xiVector = [
+      vector2[0] - vector1[0],
+      vector2[1] - vector1[1],
+      vector2[2] - vector1[2]
+    ];
+    const teta = 180 * parseFloat(e.target.dist.value) / (Math.PI * r);
+    const gamma = toRadians(180 - Math.acos(pointProduct(vector1, xiVector) / (magnitude(vector1) * magnitude(xiVector))));
+    const sigma = 2 * Math.PI - teta - gamma;
+    console.log(teta + gamma + sigma);
+    const k0 = r * Math.sin(teta) / Math.sin(sigma);
+    console.log(k0);
+    const xiUnitVector = unitVector(xiVector);
+    const k0XiUnitVector = [
+      k0 * xiUnitVector[0],
+      k0 * xiUnitVector[1],
+      k0 * xiUnitVector[2]
+    ];
+    const wVector = [
+      vector1[0] + k0XiUnitVector[0],
+      vector1[1] + k0XiUnitVector[1],
+      vector1[2] + k0XiUnitVector[2]
+    ];
+    const vector3 = [
+      r * wVector[0],
+      r * wVector[1],
+      r * wVector[2]
+    ];
+    console.log(vector3);
+    console.log(Math.asin(vector3[2] / r));
+  }
+
   const styles = {
     division: {
       backgroundColor: "#121212",
@@ -182,6 +240,10 @@ const Main = () => {
     input: {
       width: "50%",
       padding: "5px",
+      backgroundColor: "#191919",
+      color: "white",
+      border: "  white",
+      borderRadius: "5px"
     },
   };
 
@@ -347,7 +409,40 @@ const Main = () => {
       </div >
       <div style={styles.division}>
         <h1 style={styles.title}>Manejo de Rutas</h1>
-        <button style={styles.button} onClick={()=>window.location.href="https://edgarsc0.github.io/prueba-grafos/"}>Ir a manejo de rutas</button>
+        <button style={styles.button} onClick={() => window.location.href = "https://edgarsc0.github.io/prueba-grafos/"}>Ir a manejo de rutas</button>
+      </div>
+      <div style={styles.division}>
+        <h1 style={styles.title}>Calcular coordenadas geograficas</h1>
+        <p>Puntos de referencia:</p>
+        <form onSubmit={handleCalculateCoords}>
+          <button style={styles.button}>Calcular</button>
+          <table style={styles.locationTable}>
+            <tbody>
+              <tr>
+                <th style={styles.tableCell}>Primer punto:</th>
+                <td style={styles.tableCell}>
+                  <input style={styles.input} placeholder="Latitud" name="lat1"></input>
+                  <input style={styles.input} placeholder="Longitud" name="lon1"></input>
+                </td>
+              </tr>
+              <tr>
+                <th style={styles.tableCell}>Segundo punto:</th>
+                <td style={styles.tableCell}>
+                  <input style={styles.input} placeholder="Latitud" name="lat2"></input>
+                  <input style={styles.input} placeholder="Longitud" name="lon2"></input>
+                </td>
+              </tr>
+              <tr>
+                <th style={styles.tableCell}>
+                  Distancia:
+                </th>
+                <td style={styles.tableCell}>
+                  <input style={styles.input} placeholder="Distancia" name="dist"></input>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
       </div>
     </>
   );
