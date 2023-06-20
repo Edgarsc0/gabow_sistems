@@ -28,7 +28,7 @@ const Mapa = ({ position }) => {
           <ZoomControl position="bottomleft" />
           <Marker position={position} icon={new Icon({
             iconUrl:"./favicon.ico",
-            iconSize:[50,50]
+            iconSize:[25,25]
           })}>
             <Popup>¡Aquí estás!</Popup>
           </Marker>
