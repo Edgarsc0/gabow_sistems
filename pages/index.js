@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
-const MapWithUserLocation=dynamic(()=>import("@/components/Mapa"),{ssr:false})
+const MapWithUserLocation = dynamic(() => import("@/components/Mapa"), { ssr: false })
 
 const Main = () => {
   const [currentPosition, setCurrentPosition] = useState({});
@@ -27,6 +27,24 @@ const Main = () => {
   };
 
   const styles = {
+    division: {
+      backgroundColor: "#121212",
+      border: "1px solid #121212",
+      borderRadius: "8px",
+      padding: "20px",
+      marginBottom: "20px",
+      marginTop:"20px",
+      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    },
+    h2: {
+      color: "#333",
+      fontSize: "24px",
+      marginBottom: "10px",
+    },
+    p: {
+      color: "#666",
+      fontSize: "16px",
+    },
     title: {
       fontSize: "24px",
       marginBottom: "10px",
@@ -57,41 +75,46 @@ const Main = () => {
   };
 
   return (
-    <div>
-      <h1 style={styles.title}>Obtener ubicación actual</h1>
-      <hr />
-      <br></br>
-      <button style={styles.button} onClick={getCurrentPosition}>Obtener</button>
-      <br />
-      {currentPosition.latitude && currentPosition.longitude ? (
-        <>
-          <table style={styles.locationTable}>
-            <tbody>
-              <tr>
-                <th style={styles.tableCell}>Latitud</th>
-                <td style={styles.tableCell}>
-                  <input style={styles.input} value={currentPosition.latitude} readOnly />
-                </td>
-              </tr>
-              <tr>
-                <th style={styles.tableCell}>Longitud</th>
-                <td style={styles.tableCell}>
-                  <input style={styles.input} value={currentPosition.longitude} readOnly />
-                </td>
-              </tr>
-              <tr>
-                <th style={styles.tableCell}>Altura</th>
-                <td style={styles.tableCell}>
-                  <input style={styles.input} value={currentPosition.altitude} readOnly />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <MapWithUserLocation position={[currentPosition.latitude,currentPosition.longitude]}/>
-        </>
+    <>
+      <div style={styles.division}>
+        <h1 style={styles.title}>Obtener ubicación actual</h1>
+        <hr />
+        <br></br>
+        <button style={styles.button} onClick={getCurrentPosition}>Obtener</button>
+        <br />
+        {currentPosition.latitude && currentPosition.longitude ? (
+          <>
+            <table style={styles.locationTable}>
+              <tbody>
+                <tr>
+                  <th style={styles.tableCell}>Latitud</th>
+                  <td style={styles.tableCell}>
+                    <input style={styles.input} value={currentPosition.latitude} readOnly />
+                  </td>
+                </tr>
+                <tr>
+                  <th style={styles.tableCell}>Longitud</th>
+                  <td style={styles.tableCell}>
+                    <input style={styles.input} value={currentPosition.longitude} readOnly />
+                  </td>
+                </tr>
+                <tr>
+                  <th style={styles.tableCell}>Altura</th>
+                  <td style={styles.tableCell}>
+                    <input style={styles.input} value={currentPosition.altitude} readOnly />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <MapWithUserLocation position={[currentPosition.latitude, currentPosition.longitude]} />
+          </>
 
-      ) : null}
-    </div>
+        ) : null}
+      </div>
+      <div>
+        <h1 style={styles.title}>Obtener ubicación actual</h1>
+      </div>
+    </>
   );
 };
 
