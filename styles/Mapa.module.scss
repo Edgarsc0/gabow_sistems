@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    justify-content: center;
+    height: 200px;
+    @media (max-width:768px) {
+        padding-bottom: 4rem;
+        height: 200px;
+    }
+}
+
+.container2 {
+    display: flex;
+    justify-content: center;
+}
+
