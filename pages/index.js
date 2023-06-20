@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
-const MapWithUserLocation = dynamic(() => import("@/components/Mapa"), { ssr: false })
+const MapWithUserLocation = dynamic(() => import("@/components/Mapa"), { ssr: false });
+const MapWithLine=dynamic(()=>import("@/components/LineMap"),{ssr:false});
 
 const Main = () => {
   const [currentPosition, setCurrentPosition] = useState({});
+  const [results, setResults] = useState({
+    distanceBetweenPoints: null
+  });
+  const [points,setPoints]=useState(null);
+  const r = 6.371009 * 10 ** 6;
 
   useEffect(() => {
-    console.log(currentPosition);
-  }, [currentPosition]);
+    console.log(results);
+  }, [results])
 
   const getCurrentPosition = () => {
     const success = (pos) => {
@@ -25,6 +31,39 @@ const Main = () => {
 
     navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true });
   };
+
+  const toRadians = (angle) => {
+    return angle * Math.PI / 180;
+  }
+
+  const pointProduct = (vector1, vector2) => {
+    return vector1[0] * vector2[0] + vector1[1] * vector2[1] + vector1[2] * vector2[2];
+  }
+
+  const distanceBetweenPoints = (firstPoint, secondPoint) => {
+    const [lat1, lon1] = firstPoint;
+    const [lat2, lon2] = secondPoint;
+    const vector1 = [
+      r * Math.cos(toRadians(lat1)) * Math.cos(toRadians(lon1)),
+      r * Math.cos(toRadians(lat1)) * Math.sin(toRadians(lon1)),
+      r * Math.sin(toRadians(lat1))
+    ];
+    const vector2 = [
+      r * Math.cos(toRadians(lat2)) * Math.cos(toRadians(lon2)),
+      r * Math.cos(toRadians(lat2)) * Math.sin(toRadians(lon2)),
+      r * Math.sin(toRadians(lat2))
+    ];
+    return r * Math.acos(pointProduct(vector1, vector2) / r ** 2);
+  }
+
+  const handleDistanceBetweenPoints = (e) => {
+    e.preventDefault();
+    setResults({
+      ...results,
+      distanceBetweenPoints: distanceBetweenPoints([parseFloat(e.target.lat1.value), parseFloat(e.target.lon1.value)], [parseFloat(e.target.lat2.value), parseFloat(e.target.lon2.value)])
+    });
+    setPoints([[parseFloat(e.target.lat1.value), parseFloat(e.target.lon1.value)], [parseFloat(e.target.lat2.value), parseFloat(e.target.lon2.value)]])
+  }
 
   const styles = {
     division: {
@@ -76,6 +115,8 @@ const Main = () => {
 
   return (
     <>
+      <h1>Gabow systems</h1>
+
       <div style={styles.division}>
         <h1 style={styles.title}>Obtener ubicación actual</h1>
 
@@ -113,7 +154,8 @@ const Main = () => {
       </div>
       <div style={styles.division}>
         <h1 style={styles.title}>Calcular distancias entre dos puntos</h1>
-        <form>
+        <form onSubmit={handleDistanceBetweenPoints}>
+          <button style={styles.button} type="submit">Calcular</button>
           <table style={styles.locationTable}>
             <tbody>
               <tr>
@@ -130,8 +172,18 @@ const Main = () => {
                   <input style={styles.input} placeholder="Longitud" name="lon2"></input>
                 </td>
               </tr>
+              {results.distanceBetweenPoints ? (
+                <>
+                  <tr>
+                    <th style={styles.tableCell}>{results.distanceBetweenPoints}m</th>
+                  </tr>
+                </>
+              ) : null}
             </tbody>
           </table>
+          {results.distanceBetweenPoints && points?(
+            <MapWithLine location1={points[0]} location2={points[1]} text={results.distanceBetweenPoints+"m"}/>
+          ):null}
         </form>
       </div>
     </>
