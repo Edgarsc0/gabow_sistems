@@ -6,7 +6,6 @@ import styles from '../styles/Mapa.module.scss';
 
 const Mapa = ({ position }) => {
 
-  const [cord, setCord] = useState([19.472819274952897, -99.14333273147834]);
 
   return (
     <>
@@ -20,7 +19,7 @@ const Mapa = ({ position }) => {
       </Head>
 
       <div className={styles.container}>
-        <MapContainer center={cord} zoom={11} zoomControl={false}>
+        <MapContainer center={position} zoom={11} zoomControl={false}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

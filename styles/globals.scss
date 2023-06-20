@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates|Poppins&display=swap');
-
+*{
+  text-align: center;
+}
 html,
 body {
   padding: 0;
@@ -26,4 +28,8 @@ a {
   margin: 2% auto;
   width: 90%;
   max-width: 1200px;
+}
+.containerCoords{
+  width: 100%;
+  overflow: hidden;
 }

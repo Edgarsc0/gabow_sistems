@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 const MapWithUserLocation = dynamic(() => import("@/components/Mapa"), { ssr: false });
-const MapWithLine=dynamic(()=>import("@/components/LineMap"),{ssr:false});
+const MapWithLine = dynamic(() => import("@/components/LineMap"), { ssr: false });
+const MapWithClickEvent = dynamic(() => import("@/components/MapWithClickEvents"), { ssr: false });
 
 const Main = () => {
   const [currentPosition, setCurrentPosition] = useState({});
   const [results, setResults] = useState({
     distanceBetweenPoints: null
   });
-  const [points,setPoints]=useState(null);
+  const [points, setPoints] = useState(null);
   const r = 6.371009 * 10 ** 6;
 
   useEffect(() => {
@@ -116,11 +117,9 @@ const Main = () => {
   return (
     <>
       <h1>Gabow systems</h1>
-
+      <MapWithClickEvent />
       <div style={styles.division}>
         <h1 style={styles.title}>Obtener ubicación actual</h1>
-
-        <br></br>
         <button style={styles.button} onClick={getCurrentPosition}>Obtener</button>
         <br />
         {currentPosition.latitude && currentPosition.longitude ? (
@@ -181,9 +180,35 @@ const Main = () => {
               ) : null}
             </tbody>
           </table>
-          {results.distanceBetweenPoints && points?(
-            <MapWithLine location1={points[0]} location2={points[1]} text={results.distanceBetweenPoints+"m"}/>
-          ):null}
+          {results.distanceBetweenPoints && points ? (
+            <MapWithLine location1={points[0]} location2={points[1]} text={results.distanceBetweenPoints + "m"} />
+          ) : null}
+        </form>
+      </div>
+      <div style={styles.division}>
+        <h1 style={styles.title}>Coordenadas Poligonales</h1>
+        <form >
+          <button style={styles.button} type="submit">Comprobar</button>
+          <table style={styles.locationTable}>
+            <tbody>
+              <tr>
+                <th style={styles.tableCell}>
+                  Latitud:
+                </th>
+                <td style={styles.tableCell}>
+                  <input style={styles.input}></input>
+                </td>
+              </tr>
+              <tr>
+                <th style={styles.tableCell}>
+                  Longitud
+                </th>
+                <td style={styles.tableCell}>
+                  <input style={styles.input}></input>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </form>
       </div>
     </>
