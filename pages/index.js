@@ -33,7 +33,7 @@ const Main = () => {
       borderRadius: "8px",
       padding: "20px",
       marginBottom: "20px",
-      marginTop:"20px",
+      marginTop: "20px",
       boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
     },
     h2: {
@@ -69,7 +69,7 @@ const Main = () => {
       backgroundColor: "#f0f0f0",
     },
     input: {
-      width: "100%",
+      width: "50%",
       padding: "5px",
     },
   };
@@ -78,7 +78,7 @@ const Main = () => {
     <>
       <div style={styles.division}>
         <h1 style={styles.title}>Obtener ubicación actual</h1>
-        <hr />
+
         <br></br>
         <button style={styles.button} onClick={getCurrentPosition}>Obtener</button>
         <br />
@@ -111,8 +111,28 @@ const Main = () => {
 
         ) : null}
       </div>
-      <div>
-        <h1 style={styles.title}>Obtener ubicación actual</h1>
+      <div style={styles.division}>
+        <h1 style={styles.title}>Calcular distancias entre dos puntos</h1>
+        <form>
+          <table style={styles.locationTable}>
+            <tbody>
+              <tr>
+                <th style={styles.tableCell}>Primer punto:</th>
+                <td style={styles.tableCell}>
+                  <input style={styles.input} placeholder="Latitud" name="lat1"></input>
+                  <input style={styles.input} placeholder="Longitud" name="lon1"></input>
+                </td>
+              </tr>
+              <tr>
+                <th style={styles.tableCell}>Segundo punto:</th>
+                <td style={styles.tableCell}>
+                  <input style={styles.input} placeholder="Latitud" name="lat2"></input>
+                  <input style={styles.input} placeholder="Longitud" name="lon2"></input>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
       </div>
     </>
   );
