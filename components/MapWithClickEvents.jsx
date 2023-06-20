@@ -107,7 +107,7 @@ const MapWithClickEvent = () => {
                     crossOrigin=""
                 />
             </Head>
-            <MapContainer style={{ height: '400px', width: '100%' }} center={[19.472819274952897, -99.14333273147834]} zoom={10}>
+            <MapContainer style={{ height: '400px', width: '100%' }} center={[19.472819274952897, -99.14333273147834]} zoom={13}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <ClickEvent />
                 {clickedPosition && (
