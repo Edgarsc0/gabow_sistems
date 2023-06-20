@@ -19,7 +19,7 @@ const Mapa = ({ position }) => {
       </Head>
 
       <div className={styles.container}>
-        <MapContainer center={position} zoom={11} zoomControl={false}>
+        <MapContainer center={position} zoom={15} zoomControl={false}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

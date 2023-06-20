@@ -345,6 +345,10 @@ const Main = () => {
           ) : null
         }
       </div >
+      <div style={styles.division}>
+        <h1 style={styles.title}>Manejo de Rutas</h1>
+        <button style={styles.button} onClick={()=>window.location.href="https://edgarsc0.github.io/prueba-grafos/"}>Ir a manejo de rutas</button>
+      </div>
     </>
   );
 };
